@@ -22,7 +22,7 @@
         :options="slideOptions"
       >
         <cube-slide-item v-for = "(item,index) of tabs" :key = "index">
-            <component  :is="item.comment" :data="item.data"></component>
+            <component  :is="item.comment" :data="item.data" ref="component"></component>
         </cube-slide-item>
       </cube-slide>
     </div>
@@ -50,9 +50,15 @@
         }
       }
     },
+    mounted () {
+      this.onChange(this.index)
+      console.log(this.tabs)
+    },
     methods: {
       onChange(current) {
         this.index = current
+        const component = this.$refs.component[current]
+        component.fetch && component.fetch()
       },
       onScroll(pos) {
         console.log(pos.x)

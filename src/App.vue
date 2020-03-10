@@ -2,7 +2,7 @@
   <div id="app">
     <v-header :seller="seller"></v-header>
     <div class="tab-wrapper">
-      <Tab :tabs=tabs></Tab>
+      <Tab :tabs="tabs"></Tab>
     </div>
   </div>
 </template>
@@ -52,12 +52,14 @@ export default {
     _getSeller() {
         getSeller().then((seller) => {
         this.seller = seller
+          console.log(this.seller)
      })
     }
   },
 
-  mounted() {
+  created() {
      this._getSeller()
+      console.log(this.seller)
   },
   components: {
     VHeader,
