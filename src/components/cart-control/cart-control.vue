@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  // const EVENT_ADD = 'add'
+  const EVENT_ADD = 'add'
 
   export default {
     name: 'cart-control',
@@ -22,12 +22,16 @@
     },
     methods: {
       add(event) {
+        console.log(this.food)
         if (!this.food.count) {
+          // vue中数组和对象直接修改值得变化是观测不到的 ，需要使用$set()
           this.$set(this.food, 'count', 1)
         } else {
           this.food.count++
         }
-        // this.$emit(EVENT_ADD, event.target)
+        // console.log(event.target)
+        // 派发一个事件
+        this.$emit(EVENT_ADD, event.target)
       },
       decrease() {
         if (this.food.count) {

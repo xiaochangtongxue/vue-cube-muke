@@ -55,6 +55,7 @@
         this.headerDetailComp.show()
       }
     },
+
     components: {
       SupportIco
     }

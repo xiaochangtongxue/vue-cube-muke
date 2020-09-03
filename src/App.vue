@@ -59,7 +59,8 @@ export default {
 
   created() {
      this._getSeller()
-      console.log(this.seller)
+  },
+  mounted() {
   },
   components: {
     VHeader,
