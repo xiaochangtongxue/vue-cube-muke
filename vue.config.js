@@ -29,9 +29,10 @@ module.exports = {
   devServer: {
     before(app) {
       app.get('/api/seller', function (req, res) {
+        const id = req.query.id
         res.json({
           errno: 0,
-          data: seller
+          data: Object.assign({}, seller, { id })
         })
       })
       app.get('/api/goods', function (req, res) {
@@ -48,12 +49,15 @@ module.exports = {
       })
     }
   },
-  lintOnSave:false,  //关闭eslint
+  lintOnSave: false,  //关闭eslint
   chainWebpack(config) {
     config.resolve.alias
       .set('components', resolve('src/components'))
       .set('common', resolve('src/common'))
       .set('api', resolve('src/api'))
+    config.plugin('context')
+      .use(webpack.ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-cn/])//上下文替换插件
   },
- 
+
+
 }

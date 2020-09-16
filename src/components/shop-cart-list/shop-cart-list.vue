@@ -37,7 +37,7 @@
 
 <script>
 import CartControl from "components/cart-control/cart-control";
-//   import popupMixin from 'common/mixins/popup'
+  import popupMixin from 'common/mixins/popup'
 
 const EVENT_SHOW = "show";
 const EVENT_ADD = "add";
@@ -45,10 +45,10 @@ const EVENT_LEAVE = "leave";
 const EVENT_HIDE = "hide"
 export default {
   name: "shop-cart-list",
-  // mixins: [popupMixin],
+  mixins: [popupMixin],
   data() {
     return {
-      visible: false,
+      // visible: false,
     };
   },
   props: {
@@ -67,23 +67,22 @@ export default {
     });
   },
   methods: {
-    show() {
-      this.visible = true;
-      // this.$emit(EVENT_SHOW)
-    },
-    hide() {
-      this.visible = false;
-      this.$emit(EVENT_HIDE)
-    },
+    // show() {
+    //   this.visible = true;
+    //   // this.$emit(EVENT_SHOW)
+    // },
+    // hide() {
+    //   this.visible = false;
+    //   this.$emit(EVENT_HIDE)
+    // },
 
     onAdd(target) {
-      // this.$emit(EVENT_ADD, target);
+      this.$emit(EVENT_ADD, target);
     },
     afterLeave() {
-      // this.$emit(EVENT_LEAVE);
+      this.$emit(EVENT_LEAVE);
     },
     maskClick() {
-      console.log(2222222222)
       this.hide();
     },
     empty() {

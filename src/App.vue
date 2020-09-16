@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import qs from 'query-string'
 import VHeader from 'components/v-header/v-header'
 import Tab from 'components/tab/tab'
 import Goods from 'components/goods/goods'
@@ -18,7 +19,9 @@ export default {
   name: 'app',
   data() {
     return {
-      seller: {}
+       seller: {
+          id: qs.parse(location.search).id
+        }
     }
   },
   computed: {
@@ -50,9 +53,11 @@ export default {
   },
   methods: {
     _getSeller() {
-        getSeller().then((seller) => {
+        getSeller({
+          id: this.seller.id
+        }).then((seller) => {
         this.seller = seller
-          console.log(this.seller)
+          // console.log(this.seller)
      })
     }
   },
@@ -61,6 +66,7 @@ export default {
      this._getSeller()
   },
   mounted() {
+    console.log()
   },
   components: {
     VHeader,

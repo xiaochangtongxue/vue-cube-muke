@@ -5,13 +5,17 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "report":"vue-cli-service build --report"  
   },
   "dependencies": {
     "api": "0.0.1",
     "axios": "^0.19.2",
     "core-js": "^3.4.4",
     "cube-ui": "~1.12.15",
+    "good-storage": "^1.1.1",
+    "moment": "^2.27.0",
+    "query-string": "^6.1.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {

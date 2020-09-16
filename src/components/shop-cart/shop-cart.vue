@@ -15,7 +15,7 @@
           <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
         </div>
         <div class="content-right">
-          <div class="pay" :class="payClass">{{payDesc}}</div>
+          <div class="pay" :class="payClass" @click="pay">{{payDesc}}</div>
         </div>
       </div>
 
@@ -29,8 +29,10 @@
         </div>
       </div>
     </div>
+    
   </div>
 </template>
+
 
 <script>
 import Bubble from "components/bubble/bubble";
@@ -61,10 +63,19 @@ export default {
       type: Number,
       default: 0,
     },
+    fold: {
+      type: Boolean,
+      default: true,
+    },
+    sticky: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       balls: createBalls(),
+      listFold: this.fold,
     };
   },
   computed: {
@@ -103,7 +114,6 @@ export default {
   created() {
     // 下落小球
     this.dropBalls = [];
-    this.listFold = true;
   },
   methods: {
     drop(el) {
@@ -160,13 +170,13 @@ export default {
         }
         this.listFold = false;
         this._showShopCartList();
-        // this._showShopCartSticky();
+        this._showShopCartSticky();
       } else {
         this.listFold = true;
         this._hideShopCartList();
       }
     },
-   
+
     _showShopCartList() {
       this.shopCartListComp =
         this.shopCartListComp ||
@@ -174,18 +184,63 @@ export default {
           $props: {
             selectFoods: "selectFoods",
           },
-          $events:{
-            hide:()=>{
-              this.listFold = true
-            }
-          }
-
+          $events: {
+            hide: () => {
+              this.listFold = true;
+            },
+            leave: () => {
+              this._hideShopCartSticky();
+            },
+            add: (el) => {
+              this.shopCartStickyComp.drop(el);
+            },
+          },
         });
       this.shopCartListComp.show();
     },
     _hideShopCartList() {
-      this.shopCartListComp.hide();
+
+      const comp = this.sticky ? this.$parent.list : this.shopCartListComp;
+      comp.hide() && comp.hide();
+      // this.$parent.list.hide();
+      // this.shopCartListComp.hide();
     },
+
+    _showShopCartSticky() {
+      this.shopCartStickyComp =
+        this.shopCartStickyComp ||
+        this.$createShopCartSticky({
+          $props: {
+            selectFoods: "selectFoods",
+            deliveryPrice: "deliveryPrice",
+            minPrice: "minPrice",
+            fold: "listFold",
+            list: this.shopCartListComp,
+          },
+        });
+      this.shopCartStickyComp.show();
+    },
+    _hideShopCartSticky() {
+      this.shopCartStickyComp.hide();
+    },
+    pay(e) {
+      if (this.totalPrice < this.minPrice) return;
+      this.$createDialog({
+        title: "支付",
+        content: `您需要支付${this.totalPrice}元`,
+      }).show();
+      e.stopPropagation(); //在这里控制默认行为 没达到结算的时候弹出cartlist
+    },
+  },
+  watch: {
+    fold(newval) {
+      this.listFold = newval;
+    },
+    totalCount(newval){
+      if(!this.listFold&&!newval){
+        this._hideShopCartList()
+      }
+    }
   },
   components: {
     Bubble,
