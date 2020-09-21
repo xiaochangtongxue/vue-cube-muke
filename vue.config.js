@@ -59,5 +59,5 @@ module.exports = {
       .use(webpack.ContextReplacementPlugin, [/moment[/\\]locale$/, /zh-cn/])//上下文替换插件
   },
 
-
+  baseUrl: ''
 }
